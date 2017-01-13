@@ -1,12 +1,20 @@
 <?php
 /**
+ * Основной рабочий скрипт Sijeko Gerda.
  *
- *
+ * @author MaximAL
+ * @author DeadWoroz
+ * @author AlexDeg
+ * @since 2017-01-13 Выложено на Гитхаб
+ * @since 2016-11-23 Первая рабочая версия
+ * @link http://sijeko.ru
  */
 
 // Читаем настройки
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'settings.php');
+mb_internal_encoding('utf-8');
 
+// Версия
 define('GERDA_VERSION', '1.0');
 
 
@@ -19,6 +27,7 @@ echo 'v', GERDA_VERSION, '                           ©  DeadWoroz, AlexDeg, Max
 if (!validateCommitMap($commits)) {
 	echo 'Карта коммитов не ок:', PHP_EOL, implode('|' . PHP_EOL, $commits), '|', PHP_EOL, PHP_EOL;
 	echo 'Должно быть ровно 7 строк по 52 символа каждая: 7 дней в неделе, 52 недели в году.', PHP_EOL;
+	// Говорим операционной системе об ошибке
 	exit(1);
 }
 echo 'Карта коммитов ок:', PHP_EOL, implode('|' . PHP_EOL, $commits), '|', PHP_EOL, PHP_EOL;
@@ -70,7 +79,7 @@ chmod($commandFile, 0740);
 
 echo 'Адрес репозитория: ', $origin, PHP_EOL;
 
-
+// Успешное завершение
 exit(0);
 
 
@@ -79,8 +88,10 @@ exit(0);
 //// Вспомогательные функции
 
 /**
- * @param \DateTime $dateTime
- * @return string
+ * Получить название дня недели.
+ *
+ * @param \DateTime $dateTime Нужная дата
+ * @return string Возвращает русское название дня недели для данной даты.
  */
 function getWeekDay($dateTime)
 {
@@ -92,8 +103,9 @@ function getWeekDay($dateTime)
 
 /**
  * Проверка карты коммитов.
- * @param string[] $map
- * @return bool
+ *
+ * @param string[] $map Карта коммитов
+ * @return bool Возвращает `true` при успешной валидации, и `false` в противном случае.
  */
 function validateCommitMap($map)
 {
@@ -117,7 +129,7 @@ function validateCommitMap($map)
  *
  * @param  string[]   $map          Карта коммитов в виде массива из 7 строк по 52 символа каждая
  * @param  \DateTime  $firstSunday  Дата последнего воскресенья год назад
- * @return array
+ * @return array Возвращает массив, где ключ — дата текстом (Y-m-d), а значение — количество коммитов в этот день.
  */
 function generateCommits($map, $firstSunday)
 {
